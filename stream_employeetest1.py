@@ -19,21 +19,15 @@ def predict(model, input_df):
 def run():
     from PIL import Image
     image = Image.open('employeeleftimage.jpg')
-    
     image_office = Image.open('office.jpg')
-    
     st.image(image,use_column_width=True)
-    
-    add_selectbox = st.sidebar.selectbox("How would you like to predict?","Online", "Batch"))
-    
+    add_selectbox = st.sidebar.selectbox(
+    "How would you like to predict?",
+    ("Online", "Batch"))
     st.sidebar.info('This app is created to predict if an employee will leave the company')
-    
     st.sidebar.success('https://www.pycaret.org')
-    
     st.sidebar.image(image_office)
-    
     st.title("Predicting employee leaving")
-    
     if add_selectbox == 'Online':
         satisfaction_level=st.number_input('satisfaction_level' , min_value=0.1, max_value=1.0, value=0.1)
         last_evaluation =st.number_input('last_evaluation',min_value=0.1, max_value=1.0, value=0.1)
@@ -45,16 +39,11 @@ def run():
         output=""
         input_dict={'satisfaction_level':satisfaction_level,'last_evaluation':last_evaluation,'number_project':number_project,'time_spend_company':time_spend_company,'Work_accident': Work_accident,'promotion_last_5years':promotion_last_5years,'salary' : salary}
         input_df = pd.DataFrame([input_dict])
-
-        
         if st.button("Predict"):
             output = predict(model=model, input_df=input_df)
             output = str(output)
         st.success('The output is {}'.format(output))
-        
-
-
-    if add_selectbox == 'Batch':        
+    if add_selectbox == 'Batch':
         file_upload = st.file_uploader("Upload csv file for predictions", type=["csv"])
         if file_upload is not None:
             data = pd.read_csv(file_upload)
